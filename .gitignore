@@ -1,0 +1,16 @@
+.env
+.env.docker
+
+go-ava-crm-backend*
+*.json
+main
+ava-crm-backend-linux
+static/
+
+.DS_Store
+
+qrcode.png
+
+
+.github/workflows/*.yaml
+.github/workflows/*.yml

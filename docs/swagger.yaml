@@ -1,0 +1,120 @@
+definitions:
+  auth.GroupDto:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  auth.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  auth.UserDto:
+    properties:
+      first_name:
+        type: string
+      group:
+        $ref: '#/definitions/auth.GroupDto'
+      id:
+        type: integer
+      last_name:
+        type: string
+    type: object
+  auth.UserLoginResponse:
+    properties:
+      auth_token:
+        type: string
+      auth_token_exp:
+        type: integer
+      menus:
+        items:
+          $ref: '#/definitions/menu.MenuNode'
+        type: array
+      refresh_token:
+        type: string
+      refresh_token_exp:
+        type: integer
+      user:
+        $ref: '#/definitions/auth.UserDto'
+    type: object
+  menu.MenuNode:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/menu.MenuNode'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      path:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /admin/auth/login:
+    post:
+      description: Login
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.UserLoginResponse'
+      summary: Login
+      tags:
+      - Auth Admin
+  /admin/auth/refresh-token:
+    get:
+      description: Refresh Token
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.UserLoginResponse'
+      security:
+      - RefreshToken: []
+      summary: Refresh Token
+      tags:
+      - Auth Admin
+  /admin/ping:
+    get:
+      description: Ping
+      responses:
+        "200":
+          description: pong
+          schema:
+            type: string
+      security:
+      - AuthToken: []
+      summary: Ping
+      tags:
+      - Auth Admin
+securityDefinitions:
+  AuthToken:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+  RefreshToken:
+    description: Type "Bearer" followed by a space and JWT refresh token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
