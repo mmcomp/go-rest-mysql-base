@@ -9,10 +9,8 @@ import (
 )
 
 func Connect(host, port, user, password, dbname string, config *gorm.Config) (*gorm.DB, error) {
-	// dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-	// 	user, password, host, port, dbname)
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/?charset=utf8mb4&parseTime=True&loc=Local",
-		user, password, host, port)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		user, password, host, port, dbname)
 
 	return gorm.Open(mysql.Open(dsn), config)
 }
