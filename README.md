@@ -37,6 +37,16 @@ In order to run the migration you can call the following command:
 ```
 go run . migration run
 ```
+I added intial database schema as first migration so if you run above command and you sat the correct database configurations in environments, you will have the intial tables and a base Admin group and one menu (`users`) and one user with following credentials:
+```
+Username: admin
+Password: admin
+```
+
+In order to run one step down in migration you can use the following command:
+```
+go run . migrate down
+```
 
 ## Authentication
 When user logs in, we generate two JWT tokens for him/her. One access and one refresh token.
