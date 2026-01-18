@@ -15,11 +15,11 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/admin/auth/login": {
+        "/auth/login": {
             "post": {
                 "description": "Login",
                 "tags": [
-                    "Auth Admin"
+                    "Auth"
                 ],
                 "summary": "Login",
                 "parameters": [
@@ -43,29 +43,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/auth/refresh-token": {
-            "get": {
-                "security": [
-                    {
-                        "RefreshToken": []
-                    }
-                ],
-                "description": "Refresh Token",
-                "tags": [
-                    "Auth Admin"
-                ],
-                "summary": "Refresh Token",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/auth.UserLoginResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/ping": {
+        "/auth/ping": {
             "get": {
                 "security": [
                     {
@@ -74,7 +52,7 @@ const docTemplate = `{
                 ],
                 "description": "Ping",
                 "tags": [
-                    "Auth Admin"
+                    "Auth"
                 ],
                 "summary": "Ping",
                 "responses": {
@@ -82,6 +60,28 @@ const docTemplate = `{
                         "description": "pong",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh-token": {
+            "get": {
+                "security": [
+                    {
+                        "RefreshToken": []
+                    }
+                ],
+                "description": "Refresh Token",
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refresh Token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/auth.UserLoginResponse"
                         }
                     }
                 }

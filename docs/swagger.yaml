@@ -62,7 +62,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /admin/auth/login:
+  /auth/login:
     post:
       description: Login
       parameters:
@@ -79,21 +79,8 @@ paths:
             $ref: '#/definitions/auth.UserLoginResponse'
       summary: Login
       tags:
-      - Auth Admin
-  /admin/auth/refresh-token:
-    get:
-      description: Refresh Token
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/auth.UserLoginResponse'
-      security:
-      - RefreshToken: []
-      summary: Refresh Token
-      tags:
-      - Auth Admin
-  /admin/ping:
+      - Auth
+  /auth/ping:
     get:
       description: Ping
       responses:
@@ -105,7 +92,20 @@ paths:
       - AuthToken: []
       summary: Ping
       tags:
-      - Auth Admin
+      - Auth
+  /auth/refresh-token:
+    get:
+      description: Refresh Token
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.UserLoginResponse'
+      security:
+      - RefreshToken: []
+      summary: Refresh Token
+      tags:
+      - Auth
 securityDefinitions:
   AuthToken:
     description: Type "Bearer" followed by a space and JWT token.
