@@ -30,6 +30,9 @@ func cmdMigrate(url string, args []string) {
 	case "run":
 		cmdMigrateRun(m)
 		return
+	case "down":
+		cmdMigrateDown(m)
+		return
 	case "force":
 		cmdMigrateForce(m, args[1:])
 		return
@@ -55,6 +58,14 @@ func cmdMigrateForce(m *migrate.Migrate, args []string) {
 	}
 
 	if err := m.Force(v); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func cmdMigrateDown(m *migrate.Migrate) {
+	if err := m.Down(); err == migrate.ErrNoChange {
+		log.Printf("no change")
+	} else if err != nil {
 		log.Fatal(err)
 	}
 }
