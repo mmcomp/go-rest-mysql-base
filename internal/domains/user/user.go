@@ -17,7 +17,7 @@ type User struct {
 	ID        uint         `gorm:"primaryKey" json:"id"`
 	Username  string       `json:"username" gorm:"column:email"`
 	Password  string       `json:"-" gorm:"column:password"`
-	GroupId   uint         `json:"group_id" gorm:"column:groups_id"`
+	GroupId   uint         `json:"group_id" gorm:"column:group_id"`
 	Group     *group.Group `json:"group" gorm:"foreignKey:GroupId"`
 	FirstName string       `json:"first_name" gorm:"column:first_name"`
 	LastName  string       `json:"last_name" gorm:"column:last_name"`

@@ -29,30 +29,35 @@ func GetToken(headers http.Header) (string, error) {
 	return "", errors.New("authentication token not found")
 }
 
-func ParseToken(tokenString, secretKey string) (uint, string, error) {
+type TokenClaim struct {
+	Data uint `json:"data"`
+}
+
+func ParseToken(tokenString, secretKey string) (uint, uint, error) {
 	claims := jwt.MapClaims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secretKey), nil
 	})
 
 	if err != nil {
-		return 0, "", err
+		return 0, 0, err
 	}
 	if !token.Valid {
-		return 0, "", fmt.Errorf("token is not valid")
+		return 0, 0, fmt.Errorf("token is not valid")
 	}
 
 	// Extract user_id from claims
-	userIdFloat, ok := claims["sub"].(float64)
+	userIDFloat, ok := claims["sub"].(float64)
 	if !ok {
-		return 0, "", fmt.Errorf("userId claim is not found or not a number")
+		return 0, 0, fmt.Errorf("userId claim is not found or not a number")
 	}
-	groupName, ok := claims["group"].(string)
+	userId := uint(userIDFloat)
+	groupIDFloat, ok := claims["group"].(float64)
 	if !ok {
-		// return 0, "", fmt.Errorf("group claim is not found or not a string")
-		groupName = ""
+		return 0, 0, fmt.Errorf("group claim is not found or not a number")
 	}
-	return uint(userIdFloat), groupName, nil
+	groupID := uint(groupIDFloat)
+	return userId, groupID, nil
 }
 
 func AuthMiddleware(secretKey string) gin.HandlerFunc {

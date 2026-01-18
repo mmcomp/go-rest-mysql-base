@@ -36,9 +36,9 @@ func NewAuthController(secretKey string, db *gorm.DB, groupMenuService GroupMenu
 //	@Security	AuthToken
 //	@Schemes
 //	@Description	Ping
-//	@Tags			Auth Admin
+//	@Tags			Auth
 //	@Success		200	{string}	string	"pong"
-//	@Router			/admin/ping [get]
+//	@Router			/auth/ping [get]
 func (s *AuthController) Ping(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "pong"})
 }
@@ -49,9 +49,9 @@ func (s *AuthController) Ping(c *gin.Context) {
 //	@Security	RefreshToken
 //	@Schemes
 //	@Description	Refresh Token
-//	@Tags			Auth Admin
+//	@Tags			Auth
 //	@Success		200	{object}	UserLoginResponse
-//	@Router			/admin/auth/refresh-token [get]
+//	@Router			/auth/refresh-token [get]
 func (s *AuthController) RefreshToken(c *gin.Context) {
 	userId, exists := c.Get("userId")
 	if !exists {
@@ -80,10 +80,10 @@ func (s *AuthController) RefreshToken(c *gin.Context) {
 //	@Summary	Login
 //	@Schemes
 //	@Description	Login
-//	@Tags			Auth Admin
+//	@Tags			Auth
 //	@Param			request	body		LoginRequest	true	"Login request"
 //	@Success		200		{object}	UserLoginResponse
-//	@Router			/admin/auth/login [post]
+//	@Router			/auth/login [post]
 func (s *AuthController) Login(c *gin.Context) {
 	var request LoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {

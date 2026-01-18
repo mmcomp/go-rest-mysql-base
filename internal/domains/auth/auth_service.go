@@ -59,7 +59,7 @@ func (s *AuthService) GenerateAuthToken(userId uint, groupId uint) (LoginRespons
 
 func (s *AuthService) GetUserByUsername(ctx context.Context, username string) (User, error) {
 	var user User
-	err := s.DB.WithContext(ctx).Preload("Group").Where("email = ? AND is_deleted = 0", username).First(&user).Error
+	err := s.DB.WithContext(ctx).Preload("Group").Where("username = ?", username).First(&user).Error
 	if err != nil {
 		return User{}, err
 	}
