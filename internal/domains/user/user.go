@@ -15,7 +15,7 @@ const (
 
 type User struct {
 	ID        uint         `gorm:"primaryKey" json:"id"`
-	Username  string       `json:"username" gorm:"column:email"`
+	Username  string       `json:"username" gorm:"column:username"`
 	Password  string       `json:"-" gorm:"column:password"`
 	GroupId   uint         `json:"group_id" gorm:"column:group_id"`
 	Group     *group.Group `json:"group" gorm:"foreignKey:GroupId"`
@@ -27,4 +27,8 @@ type User struct {
 
 func (User) TableName() string {
 	return "users"
+}
+
+func (u *User) ToDto() UserDto {
+	return UserDto{ID: u.ID, Username: u.Username, FirstName: u.FirstName, LastName: u.LastName}
 }

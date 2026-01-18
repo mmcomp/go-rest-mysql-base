@@ -59,6 +59,30 @@ definitions:
       path:
         type: string
     type: object
+  user.GetUsersResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/user.UserDto'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  user.UserDto:
+    properties:
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -106,6 +130,30 @@ paths:
       summary: Refresh Token
       tags:
       - Auth
+  /users:
+    get:
+      description: Get Users
+      parameters:
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page Size
+        in: query
+        name: page_size
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetUsersResponse'
+      security:
+      - AuthToken: []
+      summary: Get Users
+      tags:
+      - User
 securityDefinitions:
   AuthToken:
     description: Type "Bearer" followed by a space and JWT token.

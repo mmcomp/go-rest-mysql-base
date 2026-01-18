@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/mmcomp/go-rest-mysql-base/docs"
 	"github.com/mmcomp/go-rest-mysql-base/internal/domains/auth"
+	"github.com/mmcomp/go-rest-mysql-base/internal/domains/user"
 	"github.com/mmcomp/go-rest-mysql-base/middlewares"
 	"github.com/mmcomp/go-rest-mysql-base/ratelimit"
 	swaggerfiles "github.com/swaggo/files"
@@ -34,7 +35,13 @@ func SetupRoutes(router *gin.Engine, secretKey string, db *gorm.DB) {
 	unauthenticated := router.Group("/")
 	authorized := router.Group("/")
 	authorized.Use(middlewares.AuthMiddleware(secretKey))
-	auth.InitAuthDomain(authorized, unauthenticated, secretKey, db)
+	authorized.Use(middlewares.ACLMiddleware)
+	user.InitUserDomain(authorized, db)
+	groupMenus, err := auth.InitAuthDomain(authorized, unauthenticated, secretKey, db)
+	if err != nil {
+		panic(err)
+	}
+	middlewares.GroupMenus = groupMenus
 	if os.Getenv("ENV") != "production" {
 		docs.SwaggerInfo.BasePath = "/api/v1"
 		router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

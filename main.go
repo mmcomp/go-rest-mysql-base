@@ -11,7 +11,6 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/mmcomp/go-rest-mysql-base/database"
 	"github.com/mmcomp/go-rest-mysql-base/routes"
-	"github.com/robfig/cron/v3"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -28,10 +27,6 @@ var version = ""
 // @name						Authorization
 // @description				Type "Bearer" followed by a space and JWT refresh token.
 func main() {
-	// for _, arg := range os.Args {
-	// 	fmt.Println("arg: '", arg, "' = migrate:", arg == "migrate")
-	// }
-	// return
 	if len(os.Args) >= 2 && os.Args[1] == "version" {
 		fmt.Println(version)
 		return
@@ -78,9 +73,6 @@ func main() {
 		cmdMigrate(url, []string{"run"})
 	}
 
-	// Init cron
-	c := cron.New()
-
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
@@ -96,8 +88,6 @@ func main() {
 
 	routes.SetupRoutes(r, secretKey, db)
 
-	c.Start()
-
-	r.Run(":" + appPort)
 	fmt.Println("Server is running on port " + appPort)
+	r.Run(":" + appPort)
 }

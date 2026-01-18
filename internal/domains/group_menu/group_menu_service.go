@@ -16,6 +16,19 @@ func NewGroupMenuService(db *gorm.DB) *GroupMenuService {
 	return &GroupMenuService{db: db}
 }
 
+func (s *GroupMenuService) LoadGroupMenusIntoMemory(ctx context.Context) (map[uint][]menu.Menu, error) {
+	groupMenusMap := make(map[uint][]menu.Menu)
+	var groupMenus []GroupMenu
+	err := s.db.WithContext(ctx).Preload("Menu").Find(&groupMenus).Error
+	if err != nil {
+		return nil, err
+	}
+	for _, groupMenu := range groupMenus {
+		groupMenusMap[groupMenu.GroupID] = append(groupMenusMap[groupMenu.GroupID], *groupMenu.Menu)
+	}
+	return groupMenusMap, nil
+}
+
 func (s *GroupMenuService) GetGroupMenus(ctx context.Context, groupID uint) ([]GroupMenu, error) {
 	var groupMenus []GroupMenu
 	err := s.db.WithContext(ctx).Preload("Menu").Where("group_id = ?", groupID).Find(&groupMenus).Error
