@@ -74,3 +74,12 @@ This will update the existing `docs` folder and you can see this after running t
 ## Deploy
 I added a simple `sh` file that simply runs all the commands needed to run a new version of the code.
 The `deploy.sh` is the file, you are free to use it.
+
+## Static path
+If you want to serve static files you can put them in the `static` directory in the root path and you can access it in the following address:
+```
+[YOUR ADDRESS]/static/[FILE FULL NAME]
+```
+
+## CI/CD
+There is a simple go build action I added so that when ever there is changes happening to the `main` branch, it will build and run tests to make sure.
