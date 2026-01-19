@@ -23,6 +23,7 @@ DB_PORT=
 DB_USER=
 DB_PASSWORD=
 ```
+`You need to have a working MySql Server and create a database for this to work.`
 
 ## Migration
 If you want to create a migration you can run the following command in the rooy path of the code:
